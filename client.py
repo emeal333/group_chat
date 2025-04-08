@@ -6,8 +6,11 @@ from tkinter import simpledialog
 
 class App:
     def __init__(self, master):
+        self.username = simpledialog.askstring("Username", "Please enter your name:")
+        if not self.username:
+            self.username = 'Anonymous'
         self.master = master
-        master.title("Socket Reader")
+        master.title(f"Socket Reader: {self.username}")
 
         self.chat_display = tk.Text(master, height=10, width=40, state='disabled')
         self.chat_display.pack()
@@ -22,10 +25,6 @@ class App:
         self.socket_thread = threading.Thread(target=self.read_socket)
         self.socket_thread.daemon = True  # Allow program to exit even if thread is running
         self.socket_thread.start()
-
-        self.username = simpledialog.askstring("Username", "Please enter your name:")
-        if not self.username:
-            self.username = 'Anonymous'
 
         self.update_gui()
 
