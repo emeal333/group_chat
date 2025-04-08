@@ -3,6 +3,7 @@ import threading
 import socket
 import queue
 from tkinter import simpledialog
+import time
 
 class App:
     def __init__(self, master):
@@ -69,6 +70,15 @@ class App:
             self.input_box.delete(0, tk.END)
 
     def close(self):
+        exiting_message = tk.Toplevel(self.master)
+        exiting_message.title("Exiting Chat")
+        tk.Label(exiting_message, text="Exiting Chat...").pack(padx=10, pady=10)
+        exiting_message.geometry("200x100")
+        print("Exiting message displayed maybe?")
+        self.master.after(3000, lambda: self.close_chat(exiting_message))
+
+    def close_chat(self, exiting_message):
+        exiting_message.destroy()
         self.running = False
         try:
             self.sock.close()
