@@ -2,6 +2,7 @@ import tkinter as tk
 import threading
 import socket
 import queue
+from tkinter import simpledialog
 
 class App:
     def __init__(self, master):
@@ -21,6 +22,10 @@ class App:
         self.socket_thread = threading.Thread(target=self.read_socket)
         self.socket_thread.daemon = True  # Allow program to exit even if thread is running
         self.socket_thread.start()
+
+        self.username = simpledialog.askstring("Username", "Please enter your name:")
+        if not self.username:
+            self.username = 'Anonymous'
 
         self.update_gui()
 
@@ -57,8 +62,9 @@ class App:
     def send_message(self, event=None):
         message = self.input_box.get()
         if message:
+            full_message = f"{self.username}: {message}"
             try:
-                self.sock.send(message.encode())
+                self.sock.send(full_message.encode())
             except:
                 pass
             self.input_box.delete(0, tk.END)
