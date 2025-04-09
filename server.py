@@ -1,6 +1,8 @@
 from threading import Thread
 import socket
 
+clients = []
+
 def handleClient(sock):
     while True:
         try:
@@ -13,7 +15,17 @@ def handleClient(sock):
             sock.send(reply.encode())
         except:
             break
+    clients.remove(sock)
     sock.close()
+
+def broadcast(message, sender_sock):
+    for client in clients:
+        if client != sender_sock:
+            try:
+                client.send(message.encode())
+            except:
+                client.close()
+                clients.remove(client)
 
 #set up the server socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
