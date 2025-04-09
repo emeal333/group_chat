@@ -36,6 +36,7 @@ print("server is listening on port 5000, waiting for response")
 
 while True:
     connection_socket, _ = server_socket.accept()
+    clients.append(connection_socket)
     t = Thread(target=handleClient, args=(connection_socket,))
     t.start()
     # server_socket.close()
