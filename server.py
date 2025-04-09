@@ -1,8 +1,6 @@
 from threading import Thread
 import socket
 
-clients = []
-
 def handleClient(sock):
     while True:
         try:
@@ -11,23 +9,11 @@ def handleClient(sock):
                 break
             message = data.decode()
             print("Client:", message)
-            # reply = "Server: " + message
-            # sock.send(reply.encode())
-            sock.send(("You: " + message).encode())  
-            broadcast(message, sock) 
+            reply = "Server: " + message
+            sock.send(reply.encode())
         except:
             break
-    clients.remove(sock)
     sock.close()
-
-def broadcast(message, sender_sock):
-    for client in clients:
-        if client != sender_sock:
-            try:
-                client.send(message.encode())
-            except:
-                client.close()
-                clients.remove(client)
 
 #set up the server socket
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -38,9 +24,6 @@ print("server is listening on port 5000, waiting for response")
 
 while True:
     connection_socket, _ = server_socket.accept()
-    clients.append(connection_socket)
     t = Thread(target=handleClient, args=(connection_socket,))
     t.start()
     # server_socket.close()
-
-  
