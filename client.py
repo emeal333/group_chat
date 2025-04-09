@@ -2,11 +2,16 @@ import tkinter as tk
 import threading
 import socket
 import queue
+from tkinter import simpledialog
+import time
 
 class App:
     def __init__(self, master):
+        self.username = simpledialog.askstring("Username", "Please enter your name:")
+        if not self.username:
+            self.username = 'Anonymous'
         self.master = master
-        master.title("Socket Reader")
+        master.title(f"Socket Reader: {self.username}")
 
         self.chat_display = tk.Text(master, height=10, width=40, state='disabled')
         self.chat_display.pack()
@@ -57,13 +62,23 @@ class App:
     def send_message(self, event=None):
         message = self.input_box.get()
         if message:
+            full_message = f"{self.username}: {message}"
             try:
-                self.sock.send(message.encode())
+                self.sock.send(full_message.encode())
             except:
                 pass
             self.input_box.delete(0, tk.END)
 
     def close(self):
+        exiting_message = tk.Toplevel(self.master)
+        exiting_message.title("Exiting Chat")
+        tk.Label(exiting_message, text="Exiting Chat...").pack(padx=10, pady=10)
+        exiting_message.geometry("200x100")
+        print("Exiting message displayed maybe?")
+        self.master.after(3000, lambda: self.close_chat(exiting_message))
+
+    def close_chat(self, exiting_message):
+        exiting_message.destroy()
         self.running = False
         try:
             self.sock.close()
