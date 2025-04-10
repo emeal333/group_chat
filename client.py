@@ -68,6 +68,7 @@ class App:
             except:
                 pass
             self.input_box.delete(0, tk.END)
+            
 
     def close(self):
         exiting_message = tk.Toplevel(self.master)
