@@ -41,7 +41,10 @@ class App:
                 data = self.sock.recv(1024)
                 if not data:
                     break
-                self.data_queue.put(data.decode())
+                decoded = data.decode()
+                print(f"[RECEIVED]: {decoded}") 
+                self.data_queue.put(decoded)
+
             except:
                 break
 
@@ -67,6 +70,12 @@ class App:
                 self.sock.send(full_message.encode())
             except:
                 pass
+
+            self.chat_display.configure(state='normal')
+            self.chat_display.insert(tk.END, full_message + '\n')
+            self.chat_display.configure(state='disabled')
+            self.chat_display.see(tk.END)
+
             self.input_box.delete(0, tk.END)
             
 
