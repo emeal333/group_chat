@@ -37,14 +37,18 @@ class App:
         self.sock.connect((host, port))
 
         while self.running:
-            self.last_message = None
             try:
                 data = self.sock.recv(1024)
                 if not data:
                     break
                 decoded = data.decode()
-                print(f"[RECEIVED]: {decoded}") 
-                self.data_queue.put(decoded)
+                if decoded == "__SERVER_SHUTDOWN__":
+                    self.data_queue.put("Server has shut down. Exciting...")
+                    self.running = False
+                    break
+                else:
+                    print(f"[RECEIVED]: {decoded}") 
+                    self.data_queue.put(decoded)
 
             except:
                 break
@@ -55,8 +59,12 @@ class App:
                 data = self.data_queue.get_nowait()
                 self.chat_display.configure(state='normal')
                 self.chat_display.insert(tk.END, data + '\n')
+                if self.running == False:
+                    self.master.after(2000, self.close)
+                
                 self.chat_display.configure(state='disabled')
                 self.chat_display.see(tk.END)
+
         except queue.Empty:
             pass
         if self.running:
@@ -86,7 +94,6 @@ class App:
         exiting_message.title("Exiting Chat")
         tk.Label(exiting_message, text="Exiting Chat...").pack(padx=10, pady=10)
         exiting_message.geometry("200x100")
-        print("Exiting message displayed maybe?")
         self.master.after(3000, lambda: self.close_chat(exiting_message))
 
     def close_chat(self, exiting_message):

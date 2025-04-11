@@ -1,7 +1,24 @@
 from threading import Thread
 import socket
+import signal
+import sys
 
 clients = []
+
+def server_shutdown(signal, frame):
+    shutdown_message = "__SERVERSHUTDOWN__"
+    print("Server disconneting...")
+    for client in clients:
+        try:
+            client.send(shutdown_message.encode())
+            client.close()
+        except:
+            pass
+
+    server_socket.close()
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, server_shutdown)
 
 def handleClient(sock):
     clients.append(sock)
@@ -34,6 +51,7 @@ server_socket.bind(('127.0.0.1', 5000))
 server_socket.listen(5)
 
 print("server is listening on port 5000, waiting for response")
+
 
 while True:
     connection_socket, _ = server_socket.accept()
