@@ -10,3 +10,13 @@ A group chat project that uses Tkinter for the GUI display of the text area and 
 - Automatic scrolling when the text box fills up.
 - Any amount of people can join.
 - People joining and leaving does not affect anyone in the chat already.
+
+#### Team Responsibilities:
+- Liz:
+    - Created the Git repository
+    - Docummentation
+    - Server and client setup
+
+- Leah:
+    - Implemented features
+    - Documentation
