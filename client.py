@@ -37,6 +37,7 @@ class App:
         self.sock.connect((host, port))
 
         while self.running:
+            self.last_message = None
             try:
                 data = self.sock.recv(1024)
                 if not data:
@@ -65,16 +66,17 @@ class App:
     def send_message(self, event=None):
         message = self.input_box.get()
         if message:
+            print("Sending message")
             full_message = f"{self.username}: {message}"
             try:
                 self.sock.send(full_message.encode())
             except:
                 pass
 
-            self.chat_display.configure(state='normal')
-            self.chat_display.insert(tk.END, full_message + '\n')
-            self.chat_display.configure(state='disabled')
-            self.chat_display.see(tk.END)
+            # self.chat_display.configure(state='normal')
+            # self.chat_display.insert(tk.END, full_message + '\n')
+            # self.chat_display.configure(state='disabled')
+            # self.chat_display.see(tk.END)
 
             self.input_box.delete(0, tk.END)
             

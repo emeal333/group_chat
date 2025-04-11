@@ -4,6 +4,7 @@ import socket
 clients = []
 
 def handleClient(sock):
+    clients.append(sock)
     while True:
         try:
             data = sock.recv(1024)
@@ -16,10 +17,11 @@ def handleClient(sock):
         # except:
         #     break
             for client in clients:
-                    try:
-                        client.send(message.encode())
-                    except:
-                        pass
+                    if client != sock:
+                        try:
+                            client.send(message.encode())
+                        except:
+                            pass
         except:
             break
 
