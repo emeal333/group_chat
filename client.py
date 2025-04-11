@@ -61,6 +61,7 @@ class App:
                 decoded = data.decode()
 
                 #Handle server shutdown message
+
                 if decoded == "__SERVER_SHUTDOWN__":
                     self.data_queue.put("Server has shut down. Exiting...")
                     self.running = False
