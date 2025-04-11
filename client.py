@@ -30,11 +30,15 @@ class App:
         self.update_gui()
 
     def read_socket(self):
+        print("read_socket thread started")
         host = '127.0.0.1'  # Or "localhost"
         port = 5000         # Replace with your port
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((host, port))
+        print("connected to server")
+        print("sending username")
+        self.sock.send(self.username.encode())
 
         while self.running:
             try:
@@ -43,7 +47,7 @@ class App:
                     break
                 decoded = data.decode()
                 if decoded == "__SERVER_SHUTDOWN__":
-                    self.data_queue.put("Server has shut down. Exciting...")
+                    self.data_queue.put("Server has shut down. Exiting...")
                     self.running = False
                     break
                 else:
