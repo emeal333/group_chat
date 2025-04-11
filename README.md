@@ -1,3 +1,3 @@
-### Data Comminications
+# Data Comminications
 ## Project 3: Group Chat
-# Leah Barnes and Liz Mealing
+### Leah Barnes and Liz Mealing
