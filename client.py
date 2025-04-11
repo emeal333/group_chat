@@ -1,3 +1,9 @@
+'''
+Leah Barnes and Liz Mealing
+CIS 457 Data Communications
+Winter 2025
+Professor Dulimarta
+'''
 import tkinter as tk
 import threading
 import socket
