@@ -43,14 +43,11 @@ class App:
         Connect to server and listen for messages,
         add received messages to the queue.
         """
-        print("read_socket thread started")
         host = '127.0.0.1'  # Or "localhost"
         port = 5000         # Replace with your port
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.connect((host, port))
-        print("connected to server")
-        print("sending username")
         self.sock.send(self.username.encode())
 
         while self.running:
@@ -102,7 +99,6 @@ class App:
         """
         message = self.input_box.get()
         if message:
-            print("Sending message")
             full_message = f"{self.username}: {message}"
             try:
                 self.sock.send(full_message.encode())

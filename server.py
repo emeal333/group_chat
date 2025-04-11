@@ -12,7 +12,7 @@ def server_shutdown(signal, frame):
     Send message to clients tha server is shutting down.
     """
     shutdown_message = "__SERVER_SHUTDOWN__"
-    print("Server disconneting...")
+    print("\nServer disconneting...")
     for client in clients:
         try:
             client.send(shutdown_message.encode())
@@ -50,21 +50,19 @@ def handleClient(sock):
     clients.append(sock)
 
     while True:
-         try:
-             data = sock.recv(1024)
-             if not data:
-                 break
-             message = data.decode()
-             print("Client:", message)
-             # reply = "Server: " + message
-             # sock.send(reply.encode())
-         # except:
-         #     break
-             for client in clients:
-                     try:
-                         client.send(message.encode())
-         except:
-             break
+        try:
+            data = sock.recv(1024)
+            if not data:
+                break
+            message = data.decode()
+            print("Client:", message)
+            for client in clients:
+                try:
+                    client.send(message.encode())
+                except:
+                    break
+        except:
+            break
 
     #Remove client form active clients when they disconnect
     clients.remove(sock)
@@ -90,8 +88,5 @@ print("server is listening on port 5000, waiting for response")
 #Main server loop 
 while True:
     connection_socket, _ = server_socket.accept()
-    clients.append(connection_socket)  
     t = Thread(target=handleClient, args=(connection_socket,))
-    t.start()
-    # server_socket.close()
     t.start()
