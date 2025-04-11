@@ -43,12 +43,7 @@ def handleClient(sock):
                 break
             message = data.decode()
             print("Client:", message)
-            # reply = "Server: " + message
-            # sock.send(reply.encode())
-        # except:
-        #     break
             for client in clients:
-                    # if client != sock:
                     try:
                         client.send(message.encode())
                     except:
@@ -75,7 +70,5 @@ print("server is listening on port 5000, waiting for response")
 
 while True:
     connection_socket, _ = server_socket.accept()
-    # clients.append(connection_socket)  
     t = Thread(target=handleClient, args=(connection_socket,))
     t.start()
-    # server_socket.close()

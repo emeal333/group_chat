@@ -3,7 +3,6 @@ import threading
 import socket
 import queue
 from tkinter import simpledialog
-import time
 
 class App:
     def __init__(self, master):
@@ -84,11 +83,6 @@ class App:
                 self.sock.send(full_message.encode())
             except:
                 pass
-
-            # self.chat_display.configure(state='normal')
-            # self.chat_display.insert(tk.END, full_message + '\n')
-            # self.chat_display.configure(state='disabled')
-            # self.chat_display.see(tk.END)
 
             self.input_box.delete(0, tk.END)
             
